@@ -176,10 +176,10 @@ export const SigninForm = () => {
 const SignUpFormSchema = z
   .object({
     name: z.string().min(1, {
-      message: "Name is required.",
+      message: "Name is required. ",
     }),
     email: z.email({
-      message: "Enter a valid Email.",
+      message: "Enter a valid Email .",
     }),
     password: z.string().min(8, {
       message: "Password must be at least 8 characters.",
