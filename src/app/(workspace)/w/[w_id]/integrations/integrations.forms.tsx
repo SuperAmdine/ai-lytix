@@ -1,10 +1,24 @@
-// src/app/(workspace)/w/[w_id]/integrations/_components/rename-workspace.tsx
 "use client";
+
+import { Button } from "@/components/ui/button";
+import { IconBrandFacebook } from "@tabler/icons-react";
+import { useMemo } from "react";
+
+export function ConnectFacebookButton({ wId }: { wId: string }) {
+  const href = useMemo(() => `/api/facebook/connect?workspaceId=${wId}`, [wId]);
+  return (
+    <Button asChild variant="outline" className="gap-2">
+      <a href={href}>
+        <IconBrandFacebook />
+        Connect Facebook
+      </a>
+    </Button>
+  );
+}
 
 import { useState, useTransition } from "react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { renameWorkspaceAction } from "./connections.actions";
+import { renameWorkspaceAction } from "./integrations.actions";
 
 export function RenameWorkspace({
   wId,

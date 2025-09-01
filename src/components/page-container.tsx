@@ -1,7 +1,10 @@
+import ChatSidebar from "@/app/(workspace)/w/[w_id]/r/[r_id]/chat-side-bar";
+
 export const PageContainer = ({ children }: React.ComponentProps<"div">) => {
   return (
     <main className="fixed bottom-2 left-2 right-2 top-13 ">
-      <div className="absolute top-0 left-0 peer-[button]:left-11 right-0 bottom-0 bg-white rounded-2xl border-gray-200 border flex flex-col peer-[.is-chat-open]:left-64 duration-300">
+      <ChatSidebar />
+      <div className="absolute left-0 top-0 peer-[.is-chat]:left-11 right-0 bottom-0 bg-white rounded-2xl border-gray-200 border flex flex-col peer-[.is-chat-open]:left-64 duration-300">
         {children}
       </div>
     </main>

@@ -3,7 +3,7 @@
 
 import { useState, useTransition } from "react";
 import { Button } from "@/components/ui/button";
-import { saveFacebookSelectionAction } from "./connections.actions";
+
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -12,13 +12,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { saveFacebookSelectionAction } from "./integrations.actions";
 
 type AdAcc = {
-  id: string;
-  account_id: string;
-  name: string;
-  currency?: string;
-  timezone_name?: string;
+  ad_account_id: string;
+  provider_id: string;
+  name: string | null;
+  currency: string | null;
+  timezone_name: string | null;
+  last_synced_at: Date;
+  updated_at: Date;
+  created_at: Date | null;
 };
 
 export function SaveFacebookSelectionForm({
@@ -53,13 +57,16 @@ export function SaveFacebookSelectionForm({
       <div className="grid gap-2">
         <Label>Facebook Ad Account</Label>
         <Select value={value} onValueChange={setValue}>
-          <SelectTrigger className="w-[360px]">
+          <SelectTrigger className="max-w-[360px]">
             <SelectValue placeholder="Select an Ad Account" />
           </SelectTrigger>
           <SelectContent>
             {adAccounts.map((a) => (
-              <SelectItem key={a.id} value={a.id /* "act_..." id */}>
-                {a.name} ({a.account_id}) {a.currency ? `• ${a.currency}` : ""}
+              <SelectItem
+                key={a.ad_account_id}
+                value={a.ad_account_id /* "act_..." id */}
+              >
+                {a.name} {a.currency ? `• ${a.currency}` : ""}
               </SelectItem>
             ))}
           </SelectContent>

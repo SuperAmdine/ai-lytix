@@ -11,11 +11,14 @@ import { db } from "@/db";
 import { workspaces } from "@/db/workspace-schema";
 import { IconPlus } from "@tabler/icons-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
-import { CreateWorkspaceDialog } from "./workspace.create";
+import {
+  CreateWorkspaceDialog,
+  DeleteWorkspaceConfirm,
+} from "./workspace.forms";
 import { Card } from "@/components/ui/card";
 
-import { DeleteWorkspaceConfirm } from "./workspace.delete";
 import Link from "next/link";
+import { Suspense } from "react";
 export default async function Home() {
   const workspaces_data = await db.select().from(workspaces);
 
@@ -31,42 +34,56 @@ export default async function Home() {
         </PageContainerHeader>
         <PageContainerContent>
           <div className="max-w-3xl mx-auto">
-            {
-              workspaces_data.length > 0 &&
-                workspaces_data.map((workspace_item) => (
-                  <div
-                    key={workspace_item.id}
-                    className="p-3 flex items-center gap-3 flex-row border-b"
-                  >
-                    <div className="min-w-0 flex-1 text-sm">
-                      {/* <InlineRename
+            <Suspense fallback={<div>loading..</div>}>
+              {
+                workspaces_data.length > 0 &&
+                  workspaces_data.map((workspace_item) => (
+                    <div
+                      key={workspace_item.id}
+                      className="p-3 flex items-center gap-3 flex-row border-b"
+                    >
+                      <div className="min-w-0 flex-1 text-sm">
+                        {/* <InlineRename
                       id={workspace_item.id}
                       initialName={ws.name}
                     /> */}
-                      {workspace_item.name}
-                      <div className="mt-1 text-xs text-muted-foreground">
-                        Created{" "}
-                        {new Date(workspace_item.created_at!).toLocaleString()}
+                        <Button
+                          variant="link"
+                          size="sm"
+                          className="text-left px-0"
+                          asChild
+                        >
+                          <Link href={`/w/${workspace_item.id}`}>
+                            {workspace_item.name}
+                          </Link>
+                        </Button>
+
+                        <div className="mt-1 text-xs text-muted-foreground">
+                          Created{" "}
+                          {new Date(
+                            workspace_item.created_at!
+                          ).toLocaleString()}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-2">
+                        <Button variant="outline" size="sm" asChild>
+                          <Link href={`/w/${workspace_item.id}/integrations`}>
+                            edit
+                          </Link>
+                        </Button>
+
+                        <DeleteWorkspaceConfirm
+                          id={workspace_item.id}
+                          name={workspace_item.name}
+                        />
+                        {/* <DeleteWorkspaceButton id={workspace_item.id} /> */}
                       </div>
                     </div>
-
-                    <div className="flex items-center gap-2">
-                      <Button variant="outline" size="sm" asChild>
-                        <Link href={`/w/${workspace_item.id}/integrations`}>
-                          edit
-                        </Link>
-                      </Button>
-
-                      <DeleteWorkspaceConfirm
-                        id={workspace_item.id}
-                        name={workspace_item.name}
-                      />
-                      {/* <DeleteWorkspaceButton id={workspace_item.id} /> */}
-                    </div>
-                  </div>
-                ))
-              // <pre>{JSON.stringify(workspaces_data, null, 4)}</pre>
-            }
+                  ))
+                // <pre>{JSON.stringify(workspaces_data, null, 4)}</pre>
+              }
+            </Suspense>
             {workspaces_data.length === 0 && (
               <Alert variant="destructive">
                 <AlertDescription>

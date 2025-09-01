@@ -111,7 +111,7 @@ export async function GET( req: Request ) {
                 display_name: me.name,
                 email: me.email,
                 picture_url: `https://graph.facebook.com/${ me.id }/picture?type=large`,
-                data_access_expires_at: dataAccessExpiresAt?.toISOString() ?? null,
+                data_access_expires_at: dataAccessExpiresAt?.toISOString() ?? undefined,
             },
 
         } )
@@ -125,7 +125,7 @@ export async function GET( req: Request ) {
                     display_name: me.name,
                     email: me.email,
                     picture_url: `https://graph.facebook.com/${ me.id }/picture?type=large`,
-                    data_access_expires_at: dataAccessExpiresAt?.toISOString() ?? null,
+                    data_access_expires_at: dataAccessExpiresAt?.toISOString() ?? undefined,
 
                 },
             },

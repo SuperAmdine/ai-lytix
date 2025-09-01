@@ -12,7 +12,7 @@ import {
     uniqueIndex
 } from 'drizzle-orm/pg-core';
 import { user } from "./auth-schema"
-import { FacebookIntegration, GoogleIntegration } from './workspace.validation';
+import { ConnectionMeta, FacebookIntegration, GoogleIntegration } from './workspace.validation';
 export const workspaces = pgTable( "workspace", {
     id: uuid( "id" ).primaryKey().defaultRandom(),
     user_id: text( "user_id" ).notNull().references( () => user.id, { onDelete: "cascade" } ),
@@ -37,7 +37,7 @@ export const connections = pgTable( "connections", {
     access_token: text( "access_token" ).notNull(),
     refresh_token: text( "refresh_token" ),
     expires_at: timestamp( "expires_at", { withTimezone: true } ),
-    meta: jsonb( "meta" ), // raw provider data (name, email, picture, etc.)
+    meta: jsonb( "meta" ).$type<ConnectionMeta | null>(), // raw provider data (name, email, picture, etc.)
     created_at: timestamp( "created_at", { withTimezone: true } ).defaultNow(),
     updated_at: timestamp( "updated_at", { withTimezone: true } ).defaultNow(),
 }, ( table ) => [

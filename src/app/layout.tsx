@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import { synonim, amulya, satoshi } from "@/font/font";
+import { inter, synonim, amulya, satoshi } from "@/font/font";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -25,7 +25,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${amulya.variable} font-sans  bg-gray-100`}>
+      <body
+        className={`${inter.variable} ${amulya.variable} font-sans antialiased bg-gray-100`}
+      >
         <div className="h-full ">{children}</div>
       </body>
     </html>

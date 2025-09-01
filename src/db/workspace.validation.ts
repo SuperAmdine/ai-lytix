@@ -30,3 +30,10 @@ export type GoogleIntegration = {
     property_name?: string;
     // add more as you go
 };
+
+export type ConnectionMeta = {
+    email?: string;
+    display_name?: string;
+    picture_url?: string;
+    data_access_expires_at?: string;
+};
