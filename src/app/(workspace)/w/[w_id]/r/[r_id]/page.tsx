@@ -23,9 +23,18 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import ChatSidebar from "./chat-side-bar";
-import { SheetDemo } from "./side-sheet";
+import { AddChartSheet } from "./side-sheet";
+import ReportGrid from "@/components/report/report-grid";
 
 export const revalidate = 0;
+
+async function fetchReportCharts(reportId: string) {
+  const res = await fetch(`http://localhost:3000/api/reports/${reportId}/charts`, {
+    cache: "no-store",
+  });
+  if (!res.ok) return [];
+  return res.json();
+}
 
 export default async function ReportHome({
   params,
@@ -44,7 +53,7 @@ export default async function ReportHome({
     .where(and(eq(report.id, r_id), eq(report.user_id, session.user.id)));
 
   // const fb_connection_id = ws.facebook?.connection_id;
-
+const charts = await fetchReportCharts(r_id);
   return (
     <>
       <NavigationBar workspace_id={w_id} />
@@ -70,8 +79,20 @@ export default async function ReportHome({
             <div className="flex flex-row gap-3 justify-center">
               <Button>Add a new chart</Button>
               <Button variant="outline">Load From template</Button>
-              <SheetDemo />
+              <AddChartSheet reportId={r_id} />
             </div>
+          </div>
+          <div className="p-4">
+             <ReportGrid
+        items={charts.map((c: any) => ({
+          id: c.id,
+          title: c.title,
+          viz_type: c.viz_type,
+          width: c.width ?? 6,
+          height: c.height ?? 3,
+          spec: c.spec,
+        }))}
+      />
           </div>
         </PageContainerContent>
       </PageContainer>

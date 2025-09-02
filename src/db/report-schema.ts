@@ -27,4 +27,18 @@ export const report = pgTable( "report", {
     uniqueIndex( 'reportNameWorkspaceNameUniqueIndex' ).on( table.name, table.workspace_id ),
 ], );
 
+import { integer } from "drizzle-orm/pg-core";
+import type { ChartSpec } from "@/types/chart-spec";
 
+export const reportChart = pgTable( "report_chart", {
+    id: uuid( "id" ).primaryKey().defaultRandom(),
+    report_id: uuid( "report_id" ).notNull().references( () => report.id, { onDelete: "cascade" } ),
+    title: text( "title" ).notNull(),
+    viz_type: text( "viz_type" ).notNull(), // "line" | "bar" | "table"
+    spec: jsonb( "spec" ).$type<ChartSpec>().notNull(),
+    position: integer( "position" ).default( 0 ),
+    width: integer( "width" ).default( 6 ),
+    height: integer( "height" ).default( 3 ),
+    created_at: timestamp( "created_at", { withTimezone: true } ).defaultNow(),
+    updated_at: timestamp( "updated_at", { withTimezone: true } ).defaultNow(),
+} );
